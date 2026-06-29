@@ -1,213 +1,28 @@
-// GLOBAL DATA MATRICES SETUP (SERVERLESS ENGINE)
-const corePlatformData = {
-    currentPlatform: 'tiktok',
-    activeTier: 'micro',
-    
-    // Base platform multipliers based on country profiles
-    geoMultipliers: {
-        Global: 1.0,
-        India: 0.6,
-        US: 2.8
-    },
-    
-    // Niche variations mapping directly to monetization indexes
-    nicheFactors: {
-        tech: { ad: 1.8, shorts: 1.4, brand: 2.0 },
-        finance: { ad: 2.5, shorts: 1.6, brand: 2.2 },
-        gaming: { ad: 0.6, shorts: 0.7, brand: 0.8 },
-        entertainment: { ad: 0.9, shorts: 1.0, brand: 1.1 },
-        lifestyle: { ad: 1.2, shorts: 1.1, brand: 1.4 }
-    },
+const corePlatformData={currentPlatform:'youtube',activeTier:'micro',exchangeRate:83.5,geoMultipliers:{Global:1,India:.55,US:1.6,UK:1.4,Canada:1.35,Australia:1.3,UAE:1.2,Pakistan:.4,Bangladesh:.35},nicheFactors:{technology:1.3,finance:1.5,education:1.2,business:1.25,gaming:.9,entertainment:1,lifestyle:.95,beauty:1.05,fitness:1,travel:.95},tierSponsorshipBase:{nano:120,micro:450,mega:1800},youtube:{adRpmLow:2,adRpmHigh:6,shortRpmLow:.03,shortRpmHigh:.12,color:'#ff3355'},tiktok:{adRpmLow:.2,adRpmHigh:1.2,shortRpmLow:.2,shortRpmHigh:1.2,color:'#9d00ff'},facebook:{adRpmLow:.3,adRpmHigh:.8,shortRpmLow:.05,shortRpmHigh:.25,color:'#0099ff'}};
 
-    // Platform configurations
-    youtube: { baseAdRPM: 3.5, baseShortsRPM: 0.05, brandDealBase: 450, color: '#ff3355' },
-    tiktok: { baseAdRPM: 0.8, baseShortsRPM: 0.08, brandDealBase: 380, color: '#9d00ff' },
-    facebook: { baseAdRPM: 1.2, baseShortsRPM: 0.04, brandDealBase: 320, color: '#0099ff' }
-};
+window.addEventListener('DOMContentLoaded',()=>{initThemeToggle();switchPlatform('youtube',document.querySelector('.tab-btn.youtube'));checkCookieConsent();});
 
-// INITIAL RUN TRIGGER
-window.addEventListener('DOMContentLoaded', () => {
-    switchPlatform('tiktok'); // Default application configuration state
-    checkCookieConsent();
-});
+function initThemeToggle(){const saved=localStorage.getItem('omni_theme')||'dark';document.body.setAttribute('data-mode',saved);const controls=document.querySelector('.controls-area');if(!controls)return;const btn=document.createElement('button');btn.id='theme-toggle';btn.className='theme-toggle';btn.type='button';btn.onclick=toggleTheme;controls.appendChild(btn);updateThemeButton();}
+function toggleTheme(){const current=document.body.getAttribute('data-mode')||'dark';const next=current==='dark'?'light':'dark';document.body.setAttribute('data-mode',next);localStorage.setItem('omni_theme',next);updateThemeButton();}
+function updateThemeButton(){const btn=document.getElementById('theme-toggle');if(!btn)return;const mode=document.body.getAttribute('data-mode')||'dark';btn.textContent=mode==='dark'?'☀️ Light':'🌙 Dark';}
 
-// THE DYNAMIC COLOR SWITCH ENGINE
-function switchPlatform(platformName) {
-    corePlatformData.currentPlatform = platformName;
-    document.body.setAttribute('data-theme', platformName);
-    
-    // Dynamically update the dynamic theme colors in styles
-    const activeColor = corePlatformData[platformName].color;
-    document.documentElement.style.setProperty('--accent', activeColor);
-    document.documentElement.style.setProperty('--accent-glow', activeColor + '40');
-    
-    // Loop through tabs utility UI
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.querySelector(`.tab-btn.${platformName}`).classList.add('active');
-    
-    updateCalculations();
-}
+function switchPlatform(platformName,button){corePlatformData.currentPlatform=platformName;document.body.setAttribute('data-theme',platformName);const activeColor=corePlatformData[platformName].color;document.documentElement.style.setProperty('--accent',activeColor);document.documentElement.style.setProperty('--accent-glow',activeColor+'40');document.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.remove('active'));if(button)button.classList.add('active');updateCalculations();}
 
-// QUICK BADGES IMPLEMENTATION PRESETS
-function applyPreset(tier) {
-    corePlatformData.activeTier = tier;
-    document.querySelectorAll('.preset-badge').forEach(b => b.classList.remove('active'));
-    
-    const viewSlider = document.getElementById('slider-views');
-    const shortsSlider = document.getElementById('slider-shorts');
-    const dealsSlider = document.getElementById('slider-deals');
+function applyPreset(tier,button){corePlatformData.activeTier=tier;document.querySelectorAll('.preset-badge').forEach(b=>b.classList.remove('active'));if(button)button.classList.add('active');const viewSlider=document.getElementById('slider-views');const shortsSlider=document.getElementById('slider-shorts');const dealsSlider=document.getElementById('slider-deals');if(tier==='nano'){viewSlider.value=85000;shortsSlider.value=950000;dealsSlider.value=1}else if(tier==='micro'){viewSlider.value=2500000;shortsSlider.value=75000000;dealsSlider.value=8}else{viewSlider.value=42000000;shortsSlider.value=410000000;dealsSlider.value=22}updateCalculations();}
 
-    if (tier === 'nano') {
-        viewSlider.value = 85000; shortsSlider.value = 950000; dealsSlider.value = 1;
-        event.target.classList.add('active');
-    } else if (tier === 'micro') {
-        viewSlider.value = 2500000; shortsSlider.value = 75000000; dealsSlider.value = 8;
-        event.target.classList.add('active');
-    } else if (tier === 'mega') {
-        viewSlider.value = 42000000; shortsSlider.value = 410000000; dealsSlider.value = 22;
-        event.target.classList.add('active');
-    }
-    updateCalculations();
-}
+function getInputs(){return{views:parseFloat(document.getElementById('slider-views').value)||0,shorts:parseFloat(document.getElementById('slider-shorts').value)||0,deals:parseFloat(document.getElementById('slider-deals').value)||0,currency:document.getElementById('currency-select').value,geo:document.getElementById('country-select').value,niche:document.getElementById('niche-select').value};}
+function formatCompact(num){if(num>=1e9)return(num/1e9).toFixed(1)+'B';if(num>=1e6)return(num/1e6).toFixed(1)+'M';if(num>=1e3)return(num/1e3).toFixed(0)+'K';return Math.round(num).toString();}
+function formatMoney(num,currency){const symbol=currency==='INR'?'₹':'$';const factor=currency==='INR'?corePlatformData.exchangeRate:1;const locale=currency==='INR'?'en-IN':'en-US';return symbol+Math.round(num*factor).toLocaleString(locale);}
+function calculateSegments(inputs){const cfg=corePlatformData[corePlatformData.currentPlatform];const geo=corePlatformData.geoMultipliers[inputs.geo]||1;const niche=corePlatformData.nicheFactors[inputs.niche]||1;const sponsorBase=corePlatformData.tierSponsorshipBase[corePlatformData.activeTier]||450;const adLow=(inputs.views/1000)*cfg.adRpmLow*geo*niche;const adHigh=(inputs.views/1000)*cfg.adRpmHigh*geo*niche;const shortsLow=(inputs.shorts/1000)*cfg.shortRpmLow*geo*niche;const shortsHigh=(inputs.shorts/1000)*cfg.shortRpmHigh*geo*niche;const brandLow=inputs.deals*sponsorBase*geo*niche*.75;const brandHigh=inputs.deals*sponsorBase*geo*niche*1.45;const affiliateLow=(adLow+shortsLow)*.05;const affiliateHigh=(adHigh+shortsHigh)*.18;return{adLow,adHigh,shortsLow,shortsHigh,brandLow,brandHigh,affiliateLow,affiliateHigh};}
 
-// CORE MATHEMATICAL COMPUTATION ENGINE
-function updateCalculations() {
-    const views = parseFloat(document.getElementById('slider-views').value);
-    const shorts = parseFloat(document.getElementById('slider-shorts').value);
-    const deals = parseFloat(document.getElementById('slider-deals').value);
-    
-    const currentCurr = document.getElementById('currency-select').value;
-    const geo = document.getElementById('country-select').value;
-    const niche = document.getElementById('niche-select').value;
-    
-    // Sync numerical display tags above sliders
-    document.getElementById('views-display').innerText = views.toLocaleString();
-    document.getElementById('shorts-display').innerText = shorts.toLocaleString();
-    document.getElementById('deals-display').innerText = `${deals} / month`;
-    
-    // Fetch calculation configurations
-    const platform = corePlatformData.currentPlatform;
-    const geoMultiplier = corePlatformData.geoMultipliers[geo];
-    const nicheFactor = corePlatformData.nicheFactors[niche];
-    const cfg = corePlatformData[platform];
-    
-    // CALCULATING SEGMENTS (REAL-TIME ALGORITHM CALCULATIONS)
-    let adRevenue = (views / 1000) * cfg.baseAdRPM * geoMultiplier * nicheFactor.ad;
-    let shortsRevenue = (shorts / 1000) * cfg.baseShortsRPM * geoMultiplier * nicheFactor.shorts;
-    let brandRevenue = deals * cfg.brandDealBase * geoMultiplier * nicheFactor.brand * 1.5;
-    let affiliateRevenue = (adRevenue + shortsRevenue) * 0.18; // Derived ratio representation
-    
-    let totalEarnings = adRevenue + shortsRevenue + brandRevenue + affiliateRevenue;
-    
-    // Setup potential dynamic ranges
-    let lowBound = totalEarnings * 0.82;
-    let highBound = totalEarnings * 1.35;
-    
-    // CURRENCY CONVERSION MULTIPLIER MECHANISM (USD BASE TO INR COMPLIANT DATA)
-    let exchangeRate = 83.5;
-    let outputSymbol = currentCurr === 'USD' ? '$' : '₹';
-    let conversionFactor = currentCurr === 'USD' ? 1 : exchangeRate;
-    
-    // Formatting standard currency views structures
-    const formatValue = (num) => {
-        return outputSymbol + Math.round(num * conversionFactor).toLocaleString(currentCurr === 'INR' ? 'en-IN' : 'en-US');
-    };
-    
-    // Update Master Top Blocks
-    document.getElementById('total-range').innerText = `${formatValue(lowBound)} - ${formatValue(highBound)} / mo`;
-    document.getElementById('alt-total-range').innerText = currentCurr === 'USD' ? 
-        `≈ ₹${Math.round(lowBound * exchangeRate).toLocaleString('en-IN')} - ₹${Math.round(highBound * exchangeRate).toLocaleString('en-IN')}` : 
-        `≈ $${Math.round(lowBound / exchangeRate).toLocaleString('en-US')} - $${Math.round(highBound / exchangeRate).toLocaleString('en-US')}`;
-        
-    // Inject inner table breakdown segments
-    document.getElementById('breakdown-ad').innerText = formatValue(adRevenue);
-    document.getElementById('breakdown-shorts').innerText = formatValue(shortsRevenue);
-    document.getElementById('breakdown-brand').innerText = formatValue(brandRevenue);
-    document.getElementById('breakdown-affiliate').innerText = formatValue(affiliateRevenue);
-    document.getElementById('final-sum').innerText = formatValue(totalEarnings);
-    
-    // Range text allocations
-    document.getElementById('range-ad').innerText = `${formatValue(adRevenue*0.85)} - ${formatValue(adRevenue*1.3)}`;
-    document.getElementById('range-shorts').innerText = `${formatValue(shortsRevenue*0.75)} - ${formatValue(shortsRevenue*1.4)}`;
-    document.getElementById('range-brand').innerText = `${formatValue(brandRevenue*0.8)} - ${formatValue(brandRevenue*1.2)}`;
-    document.getElementById('range-affiliate').innerText = `${formatValue(affiliateRevenue*0.6)} - ${formatValue(affiliateRevenue*1.5)}`;
-    document.getElementById('final-range').innerText = `${formatValue(totalEarnings*0.78)} - ${formatValue(totalEarnings*1.45)}`;
-    
-    // Adjust dynamic percentage shares
-    let totalSumSafe = totalEarnings || 1; 
-    document.getElementById('pct-ad').innerText = Math.round((adRevenue/totalSumSafe)*100) + '%';
-    document.getElementById('pct-shorts').innerText = Math.round((shortsRevenue/totalSumSafe)*100) + '%';
-    document.getElementById('pct-brand').innerText = Math.round((brandRevenue/totalSumSafe)*100) + '%';
-    document.getElementById('pct-affiliate').innerText = Math.round((affiliateRevenue/totalSumSafe)*100) + '%';
-    
-    // Synchronize X-Factor widget components
-    document.getElementById('goal-symbol').innerText = currentCurr === 'USD' ? '$' : '₹';
-    calculateReverseGoal();
-}
+function updateCalculations(){const inputs=getInputs();document.getElementById('views-display').innerText=inputs.views.toLocaleString('en-US');document.getElementById('shorts-display').innerText=inputs.shorts.toLocaleString('en-US');document.getElementById('deals-display').innerText=`${inputs.deals} / month`;const s=calculateSegments(inputs);const adMid=(s.adLow+s.adHigh)/2;const shortsMid=(s.shortsLow+s.shortsHigh)/2;const brandMid=(s.brandLow+s.brandHigh)/2;const affiliateMid=(s.affiliateLow+s.affiliateHigh)/2;const totalLow=s.adLow+s.shortsLow+s.brandLow+s.affiliateLow;const totalHigh=s.adHigh+s.shortsHigh+s.brandHigh+s.affiliateHigh;const totalMid=adMid+shortsMid+brandMid+affiliateMid;document.getElementById('total-range').innerText=`${formatMoney(totalLow,inputs.currency)} - ${formatMoney(totalHigh,inputs.currency)} / mo`;document.getElementById('alt-total-range').innerText=inputs.currency==='USD'?`≈ ${formatMoney(totalLow,'INR')} - ${formatMoney(totalHigh,'INR')}`:`≈ ${formatMoney(totalLow,'USD')} - ${formatMoney(totalHigh,'USD')}`;document.getElementById('breakdown-ad').innerText=formatMoney(adMid,inputs.currency);document.getElementById('breakdown-shorts').innerText=formatMoney(shortsMid,inputs.currency);document.getElementById('breakdown-brand').innerText=formatMoney(brandMid,inputs.currency);document.getElementById('breakdown-affiliate').innerText=formatMoney(affiliateMid,inputs.currency);document.getElementById('final-sum').innerText=formatMoney(totalMid,inputs.currency);document.getElementById('range-ad').innerText=`${formatMoney(s.adLow,inputs.currency)} - ${formatMoney(s.adHigh,inputs.currency)}`;document.getElementById('range-shorts').innerText=`${formatMoney(s.shortsLow,inputs.currency)} - ${formatMoney(s.shortsHigh,inputs.currency)}`;document.getElementById('range-brand').innerText=`${formatMoney(s.brandLow,inputs.currency)} - ${formatMoney(s.brandHigh,inputs.currency)}`;document.getElementById('range-affiliate').innerText=`${formatMoney(s.affiliateLow,inputs.currency)} - ${formatMoney(s.affiliateHigh,inputs.currency)}`;document.getElementById('final-range').innerText=`${formatMoney(totalLow,inputs.currency)} - ${formatMoney(totalHigh,inputs.currency)}`;document.getElementById('goal-symbol').innerText=inputs.currency==='USD'?'$':'₹';calculateReverseGoal();}
 
-// THE REVERSE INTEGRATION GOAL CALCULATOR ENGINE
-function calculateReverseGoal() {
-    const targetInput = parseFloat(document.getElementById('target-amount').value) || 0;
-    const currentCurr = document.getElementById('currency-select').value;
-    const geo = document.getElementById('country-select').value;
-    const niche = document.getElementById('niche-select').value;
-    
-    let exchangeRate = 83.5;
-    // Standardize metric values to target USD base internal units
-    let targetInUSD = currentCurr === 'USD' ? targetInput : targetInput / exchangeRate;
-    
-    const geoMultiplier = corePlatformData.geoMultipliers[geo];
-    const nicheFactor = corePlatformData.nicheFactors[niche];
-    
-    // Calculate targeted projections using reverse division logic configurations
-    const computeRequiredViews = (platformName, typeBase) => {
-        let rpm = corePlatformData[platformName][typeBase] * geoMultiplier * nicheFactor.ad;
-        if(rpm <= 0) return '0';
-        let viewsNeeded = (targetInUSD / rpm) * 1000;
-        
-        if (viewsNeeded >= 1000000) return (viewsNeeded / 1000000).toFixed(1) + 'M';
-        if (viewsNeeded >= 1000) return (viewsNeeded / 1000).toFixed(0) + 'K';
-        return Math.round(viewsNeeded).toString();
-    };
+function calculateReverseGoal(){const inputs=getInputs();const targetInput=parseFloat(document.getElementById('target-amount').value)||0;const targetUsd=inputs.currency==='USD'?targetInput:targetInput/corePlatformData.exchangeRate;const geo=corePlatformData.geoMultipliers[inputs.geo]||1;const niche=corePlatformData.nicheFactors[inputs.niche]||1;function requiredViews(platformName,type){const cfg=corePlatformData[platformName];const low=cfg[type+'Low'];const high=cfg[type+'High'];const rpm=((low+high)/2)*geo*niche;if(!rpm||rpm<=0)return'0';return formatCompact((targetUsd/rpm)*1000)}document.getElementById('target-yt-views').innerText=requiredViews('youtube','adRpm');document.getElementById('target-tt-views').innerText=requiredViews('tiktok','shortRpm');document.getElementById('target-fb-views').innerText=requiredViews('facebook','adRpm');}
 
-    document.getElementById('target-yt-views').innerText = computeRequiredViews('youtube', 'baseAdRPM');
-    document.getElementById('target-tt-views').innerText = computeRequiredViews('tiktok', 'baseShortsRPM');
-    document.getElementById('target-fb-views').innerText = computeRequiredViews('facebook', 'baseAdRPM');
-}
+function toggleFaq(element){const isOpen=element.classList.contains('open');document.querySelectorAll('.faq-item').forEach(item=>item.classList.remove('open'));if(!isOpen)element.classList.add('open');}
 
-// CRAWLER ACCORDION EXPANSION LOGIC
-function toggleFaq(element) {
-    const isOpen = element.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
-    if (!isOpen) element.classList.add('open');
-}
-
-// COMPLIANCE DATA LAYERS (MODALS REPERTOIRE PACK)
-const complianceDocs = {
-    privacy: `<h2>Privacy Policy</h2><p>OmniCreator Planner operates completely client-side. We explicitly do not track, collect, capture, or cloud-sync any values inputted inside our analytical revenue evaluation matrices.</p><p>Your local cookies identifiers serve to secure user system presets configuration seamlessly without central profile logs creation across our servers.</p>`,
-    terms: `<h2>Terms of Use</h2><p>All calculations presented via OmniCreator Planner serve strictly as statistical forecasting models calibrated against public creator benchmarks. Real earnings are subjected to independent platforms monetization cycles.</p><p>Commercial reverse engineering of our underlying modular scaling metrics parameters is strictly unauthorized under fair utility laws.</p>`,
-    contact: `<h2>Contact</h2><p>Have inquiries regarding data frameworks adjustments, partnerships or dynamic brand integrations? Reach out directly to our administration support wing via electronic validation lines.</p><p>Email infrastructure protocols: support@omnicreatorplanner.com</p>`
-};
-
-function openModal(type) {
-    document.getElementById('modal-content').innerHTML = complianceDocs[type];
-    document.getElementById('modal-overlay').style.display = 'flex';
-}
-
-function closeModal() {
-    document.getElementById('modal-overlay').style.display = 'none';
-}
-
-// COOKIE BANNER COMPLIANCE FLOW
-function acceptCookies() {
-    localStorage.setItem('omni_cookies_accepted', 'true');
-    document.getElementById('cookie-bar').style.display = 'none';
-}
-
-function checkCookieConsent() {
-    if (localStorage.getItem('omni_cookies_accepted') === 'true') {
-        document.getElementById('cookie-bar').style.display = 'none';
-    }
-}
+const complianceDocs={about:`<h2>About OmniCreator Planner</h2><p>OmniCreator Planner is an educational creator earnings estimation tool. It helps creators, agencies and brands plan potential income using selected inputs, public benchmark ranges and transparent assumptions.</p><p>It is not an official calculator from YouTube, TikTok, Facebook or Meta.</p>`,privacy:`<h2>Privacy Policy</h2><p>For this demo, calculator inputs run in your browser. We do not require login or account creation for basic estimates.</p><p>Your cookie notice preference may be saved locally in your browser. Do not enter private or sensitive personal information into the calculator.</p>`,terms:`<h2>Terms of Use</h2><p>OmniCreator Planner provides educational estimates only. The numbers shown are planning ranges and not guaranteed earnings.</p><p>Actual creator income may vary due to platform policy, monetization status, audience country, watch time, engagement, advertiser demand and brand negotiations.</p>`,disclaimer:`<h2>Disclaimer</h2><p>Estimates are based on public benchmarks and selected inputs. Actual earnings may vary.</p><p>OmniCreator Planner is not affiliated with YouTube, TikTok, Facebook or Meta. All trademarks belong to their respective owners.</p>`,methodology:`<h2>How Calculation Works</h2><p>The calculator uses platform RPM ranges, country multiplier, niche multiplier, sponsorship assumptions and affiliate assumptions. It creates an educational range, not a guaranteed payout.</p>`,contact:`<h2>Contact</h2><p>For support, corrections or business inquiries, contact support@omnicreatorplanner.com.</p>`};
+function openModal(type){document.getElementById('modal-content').innerHTML=complianceDocs[type]||complianceDocs.disclaimer;document.getElementById('modal-overlay').style.display='flex';}
+function closeModal(){document.getElementById('modal-overlay').style.display='none';}
+function acceptCookies(){localStorage.setItem('omni_cookies_accepted','true');document.getElementById('cookie-bar').style.display='none';}
+function checkCookieConsent(){if(localStorage.getItem('omni_cookies_accepted')==='true'){document.getElementById('cookie-bar').style.display='none';}}
