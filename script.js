@@ -1,218 +1,340 @@
-/* THE PLATFORM ACCENT & DESIGN VARIABLE DICTIONARY MAP */
-:root {
-    --bg-gradient-start: #05070d;
-    --bg-gradient-end: #07090e;
-    --card-surface: #0d1424;
-    --card-surface-raised: #121b2d;
-    --border-stroke: #22304d;
-    --text-primary: #f7fbff;
-    --text-muted: #8fa0bd;
-    --earning-green: #00dc82;
+// THE ULTIMATE DATA SPECIFICATIONS MATRIX POOL
+const omniEngineConfig = {
+    state: {
+        platform: 'tiktok',
+        theme: 'dark',
+        currency: 'USD',
+        country: 'Global',
+        niche: 'Technology',
+        tier: 'micro'
+    },
     
-    /* Dynamic Theme Token Accents (Tiktok Purple Base Default) */
-    --platform-accent: #9d4edd;
-    --platform-glow: rgba(157, 78, 221, 0.25);
+    // Exact requested math multipliers mapping
+    rpmBounds: {
+        youtube: { low: 2.00, high: 6.00 },
+        tiktok: { low: 0.20, high: 1.20 },
+        facebook: { low: 0.30, high: 0.80 }
+    },
     
-    --yt-red: #ff3355;
-    --tt-purple: #9d4edd;
-    --fb-blue: #1d9bf0;
+    countries: {
+        UnitedStates: 1.6, UnitedKingdom: 1.4, Canada: 1.35, Australia: 1.3,
+        UAE: 1.2, India: 0.55, Pakistan: 0.4, Bangladesh: 0.35, Global: 1.0
+    },
+    
+    niches: {
+        Finance: 1.5, Technology: 1.3, Education: 1.2, Business: 1.25,
+        Gaming: 0.9, Entertainment: 1.0, Lifestyle: 0.95, Beauty: 1.05,
+        Fitness: 1.0, Travel: 0.95
+    }
+};
+
+// INITIALIZATION LOGIC FOR COMPLIANT PRESETS
+document.addEventListener('DOMContentLoaded', () => {
+    loadSavedSettingsFromLocalStorage();
+    mountGlobalSelectorsToDesktopHeader();
+    setPlatformContext(omniEngineConfig.state.platform);
+    checkCookieConsentState();
+});
+
+// DESKTOP SYSTEM FILTER GENERATOR NODE MOUNT
+function mountGlobalSelectorsToDesktopHeader() {
+    const mountNode = document.getElementById('desktop-selectors-mount');
+    if(!mountNode) return;
+    
+    mountNode.innerHTML = `
+        <select class="inline-form-selector-pills select-currency-node" onchange="syncGlobalSelects(this, 'currency')">
+            <option value="USD">USD ($)</option><option value="INR">INR (₹)</option>
+        </select>
+        <select class="inline-form-selector-pills select-country-node" onchange="syncGlobalSelects(this, 'country')">
+            <option value="Global">Global Market</option><option value="India">India</option>
+            <option value="US">United States</option><option value="UK">United Kingdom</option>
+            <option value="Canada">Canada</option><option value="Australia">Australia</option>
+            <option value="UAE">UAE</option><option value="Pakistan">Pakistan</option>
+            <option value="Bangladesh">Bangladesh</option>
+        </select>
+        <select class="inline-form-selector-pills select-niche-node" onchange="syncGlobalSelects(this, 'niche')">
+            <option value="Technology">Technology</option><option value="Finance">Finance</option>
+            <option value="Education">Education</option><option value="Business">Business</option>
+            <option value="Gaming">Gaming</option><option value="Entertainment">Entertainment</option>
+            <option value="Lifestyle">Lifestyle</option><option value="Beauty">Beauty</option>
+            <option value="Fitness">Fitness</option><option value="Travel">Travel</option>
+        </select>
+    `;
 }
 
-/* LIGHT MODE COMPLIANT COLOR MATRIX */
-body[data-theme="light"] {
-    --bg-gradient-start: #f4f7ff;
-    --bg-gradient-end: #ffffff;
-    --card-surface: #ffffff;
-    --card-surface-raised: #f4f7ff;
-    --border-stroke: #dce5f5;
-    --text-primary: #0e1729;
-    --text-muted: #65738b;
-    --earning-green: #00aa60;
+// SYNCHRONIZATION POOL STRATEGY (KEEPS DESKTOP AND MOBILE SELECTORS PARALLEL)
+function syncGlobalSelects(element, type) {
+    const val = element.value;
+    omniEngineConfig.state[type] = val;
+    
+    // Set all identical nodes across viewport layouts
+    document.querySelectorAll(`.select-${type}-node`).forEach(node => {
+        node.value = val;
+    });
+    
+    runExecutionCalculations();
 }
 
-/* DYNAMIC PLATFORM THEMING VARIANTS MAPS */
-body[data-platform="youtube"] { --platform-accent: var(--yt-red); --platform-glow: rgba(255, 51, 85, 0.25); }
-body[data-platform="tiktok"] { --platform-accent: var(--tt-purple); --platform-glow: rgba(157, 78, 221, 0.25); }
-body[data-platform="facebook"] { --platform-accent: var(--fb-blue); --platform-glow: rgba(29, 155, 240, 0.25); }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end)); color: var(--text-primary); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; min-height: 100vh; padding: 0 10px; overflow-x: hidden; }
-
-.app-wrapper { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; padding: 20px 0; }
-
-/* HEADER BRAND ARCHITECTURE */
-.app-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-stroke); padding-bottom: 16px; flex-wrap: wrap; gap: 15px; }
-.header-left { display: flex; align-items: center; }
-.brand-container { display: flex; align-items: center; gap: 12px; }
-.brand-logo-svg { width: 44px; height: 44px; animation: orbitRotation 20s linear infinite; }
-@keyframes orbitRotation { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.brand-text { display: flex; flex-direction: column; }
-.main-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-.sub-title { font-size: 11px; color: var(--text-muted); font-weight: 500; }
-
-.header-center { display: flex; align-items: center; }
-.status-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 220, 130, 0.06); border: 1px solid rgba(0, 220, 130, 0.15); border-radius: 30px; padding: 6px 12px; color: var(--earning-green); font-size: 11px; font-weight: 600; }
-.status-pulse-dot { width: 6px; height: 6px; background: var(--earning-green); border-radius: 50%; box-shadow: 0 0 8px var(--earning-green); animation: statusPulseAnimation 1.5s infinite; }
-@keyframes statusPulseAnimation { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
-
-.header-right { display: flex; align-items: center; gap: 15px; }
-.theme-toggle-btn { background: var(--card-surface); border: 1px solid var(--border-stroke); color: var(--text-primary); padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-.theme-toggle-btn:hover { border-color: var(--platform-accent); }
-
-/* INLINE DESKTOP FILTER CONTROLS GRID */
-.header-desktop-selectors { display: flex; gap: 10px; }
-.inline-form-selector-pills { background: var(--card-surface); color: var(--text-primary); border: 1px solid var(--border-stroke); padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; }
-.inline-form-selector-pills:focus { border-color: var(--platform-accent); }
-
-/* TABS SELECTION STRATAGEM */
-.platform-tabs-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.platform-tab-card { background: var(--card-surface); border: 1px solid var(--border-stroke); padding: 18px; border-radius: 12px; color: var(--text-muted); font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 10px; border-top: 3px solid var(--border-stroke); }
-.platform-indicator-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-.platform-indicator-dot.yt { background: var(--yt-red); }
-.platform-indicator-dot.tt { background: var(--tt-purple); }
-.platform-indicator-dot.fb { background: var(--fb-blue); }
-
-.platform-tab-card.active { color: var(--text-primary); border-top-color: var(--platform-accent); border-color: var(--border-stroke); background: rgba(255,255,255,0.01); box-shadow: 0 4px 20px var(--platform-glow); }
-
-/* CORE DASHBOARD STRUCTURAL LAYOUT SPLIT */
-.main-layout-split-grid { display: grid; grid-template-columns: 4.8fr 7.2fr; gap: 24px; align-items: start; }
-.glass-dashboard-card { background: var(--card-surface); border: 1px solid var(--border-stroke); border-radius: 16px; padding: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
-.card-section-heading { font-size: 16px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-/* CONFIGURATION LABELS & PRESETS */
-.mobile-inline-filters-box { display: none; } /* Injected configurations mapping */
-.badge-presets-container { margin-bottom: 24px; }
-.preset-label-tag { font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px; display: block; margin-bottom: 10px; }
-.badge-flex-row { display: flex; gap: 10px; }
-.preset-pill-btn { background: var(--card-surface-raised); border: 1px solid var(--border-stroke); color: var(--text-primary); padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
-.preset-pill-btn.active { border-color: var(--platform-accent); background: var(--platform-glow); box-shadow: 0 0 10px var(--platform-glow); }
-
-/* SLIDER PARAMETERS RENDER */
-.slider-element-wrapper { margin-bottom: 24px; }
-.slider-header-labels { display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; color: var(--text-muted); }
-.slider-live-value-counter { font-weight: 700; color: var(--text-primary); }
-input[type="range"].native-theme-slider { width: 100%; height: 6px; background: var(--card-surface-raised); border-radius: 6px; appearance: none; margin: 12px 0 6px; outline: none; }
-input[type="range"].native-theme-slider::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #ffffff; border: 2px solid var(--platform-accent); box-shadow: 0 0 8px var(--platform-accent); cursor: pointer; transition: transform 0.1s; }
-.slider-marker-bounds-row { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); font-weight: 600; }
-
-/* HERO PAYOUT INTERFACE CONTAINER */
-.results-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.badge-year-tag { background: var(--card-surface-raised); color: var(--text-muted); font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px; }
-.earnings-hero-payout-box { background: rgba(0, 220, 130, 0.02); border: 1px dashed rgba(0, 220, 130, 0.15); border-radius: 12px; padding: 28px; text-align: center; margin-bottom: 24px; }
-.payout-range-primary { font-size: 36px; font-weight: 800; color: var(--earning-green); letter-spacing: -0.5px; }
-.payout-range-alternate { font-size: 14px; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
-
-/* MATRIX TABLE DISPLAY PARAMETERS */
-.desktop-only-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 20px; }
-.breakdown-matrix-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-.breakdown-matrix-table th { color: var(--text-muted); font-weight: 600; padding: 12px; border-bottom: 1px solid var(--border-stroke); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
-.breakdown-matrix-table td { padding: 14px 12px; border-bottom: 1px solid rgba(34, 48, 77, 0.4); color: var(--text-primary); }
-.table-source-cell-layout { display: flex; align-items: center; gap: 10px; }
-.table-source-cell-layout strong { display: block; color: var(--text-primary); font-weight: 600; }
-.table-source-cell-layout small { color: var(--text-muted); font-size: 11px; }
-.table-total-row-highlight { font-weight: 700; font-size: 14px; background: rgba(255,255,255,0.01); }
-.table-total-row-highlight td { border-bottom: none; border-top: 1px solid var(--border-stroke); padding-top: 18px; }
-.table-total-row-highlight td:nth-child(2) { color: var(--earning-green); }
-
-/* MOBILE INTERFACE MATRIX CARDS STACK */
-.mobile-only-breakdown-cards-stack { display: none; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.responsive-breakdown-card-node { background: var(--card-surface-raised); border: 1px solid var(--border-stroke); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-.resp-card-left-meta strong { display: block; font-size: 13.5px; color: var(--text-primary); }
-.resp-card-left-meta small { font-size: 11px; color: var(--text-muted); display: block; margin-top: 2px; }
-.resp-card-right-metrics { text-align: right; }
-.resp-card-val { font-size: 14px; font-weight: 700; color: var(--text-primary); }
-.resp-card-range { font-size: 11.5px; color: var(--earning-green); font-weight: 600; display: block; margin-top: 2px; }
-
-.safe-compliance-disclaimer-label { font-size: 11.5px; color: var(--text-muted); line-height: 1.5; text-align: center; }
-
-/* GOAL PLANNER COMPONENT SPLIT VIEW */
-.goal-planner-panel-card { margin-top: 24px; }
-.goal-planner-container-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-stroke); padding-bottom: 12px; margin-bottom: 20px; }
-.goal-subheading-note { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
-.goal-planner-split-flex-wrapper { display: grid; grid-template-columns: 4.2fr 7.8fr; gap: 24px; align-items: center; }
-.goal-input-label-tag { font-size: 12px; color: var(--text-muted); font-weight: 600; display: block; }
-.goal-input-relative-field { position: relative; display: flex; align-items: center; margin: 10px 0; }
-.goal-currency-symbol-marker { position: absolute; left: 14px; font-weight: 700; color: var(--platform-accent); }
-.goal-native-numeric-input { width: 100%; background: var(--card-surface-raised); border: 1px solid var(--border-stroke); color: var(--text-primary); font-size: 20px; font-weight: 700; padding: 10px 10px 10px 32px; border-radius: 8px; outline: none; }
-.goal-native-numeric-input:focus { border-color: var(--platform-accent); }
-.goal-status-indicator-block { display: flex; flex-direction: column; gap: 2px; }
-.status-marker-emerald { font-size: 12px; color: var(--earning-green); font-weight: 700; }
-.status-desc-text { font-size: 11px; color: var(--text-muted); }
-
-.goal-right-metrics-display-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.goal-platform-output-row { background: var(--card-surface-raised); border: 1px solid var(--border-stroke); border-radius: 10px; padding: 14px 10px; text-align: center; }
-.goal-platform-name { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 4px; }
-.goal-computed-value { font-size: 20px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; }
-.goal-unit-subtext { font-size: 10px; color: var(--text-muted); display: block; margin-top: 2px; }
-
-/* LOWER SEGMENTS DATASPLIT SYSTEM */
-.lower-data-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.seo-table-layout-node { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
-.seo-table-layout-node th { padding: 10px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-stroke); }
-.seo-table-layout-node td { padding: 12px 10px; border-bottom: 1px solid rgba(34,48,77,0.25); color: var(--text-primary); }
-.benefits-clean-list-layer { list-style: none; }
-.benefits-clean-list-layer li { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; position: relative; padding-left: 18px; line-height: 1.5; }
-.benefits-clean-list-layer li::before { content: "✓"; position: absolute; left: 0; color: var(--earning-green); font-weight: 700; }
-
-/* INTERACTIVE SEMANTIC ACCORDIONS PACK */
-.accordion-layout-vertical-stack { display: flex; flex-direction: column; gap: 10px; }
-.accordion-node-item { background: var(--card-surface); border: 1px solid var(--border-stroke); border-radius: 8px; padding: 16px; cursor: pointer; transition: border-color 0.2s; }
-.accordion-node-item:hover { border-color: rgba(34,48,77,0.8); }
-.accordion-question-row { font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; align-items: center; color: var(--text-primary); }
-.toggle-sign-icon { color: var(--platform-accent); font-weight: 700; }
-.accordion-answer-content-block { display: none; margin-top: 12px; font-size: 13px; color: var(--text-muted); line-height: 1.6; border-top: 1px solid var(--border-stroke); padding-top: 10px; }
-.accordion-node-item.open .accordion-answer-content-block { display: block; }
-
-/* MODALS LAYOUT FRAMEWORKS */
-.modal-dialog-blur-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 5, 10, 0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
-.modal-body-container { background: var(--card-surface); border: 1px solid var(--border-stroke); width: 100%; max-width: 600px; border-radius: 12px; padding: 30px; position: relative; max-height: 85vh; overflow-y: auto; }
-.modal-close-trigger-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
-.modal-dynamic-content-area h3 { font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid var(--border-stroke); padding-bottom: 8px; }
-.modal-dynamic-content-area p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
-
-/* COMPLIANCE SYSTEM COOKIE FOOTPRINT */
-.cookie-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card-surface-raised); border: 1px solid var(--border-stroke); border-radius: 12px; padding: 16px 24px; width: 92%; max-width: 850px; display: flex; justify-content: space-between; align-items: center; gap: 20px; z-index: 99999; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-.cookie-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-.cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
-.cookie-btn { border: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
-.cookie-btn.primary { background: var(--platform-accent); color: #ffffff; }
-.cookie-btn.secondary { background: transparent; border: 1px solid var(--border-stroke); color: var(--text-primary); }
-.cookie-btn:hover { opacity: 0.9; }
-
-/* APP FOOTER PARAMS */
-.app-system-footer { text-align: center; border-top: 1px solid var(--border-stroke); padding-top: 24px; margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
-.footer-legal-disclaimer-paragraph { font-size: 11px; color: var(--text-muted); max-width: 900px; margin: 0 auto; line-height: 1.6; text-align: justify; }
-.footer-nav-links-row { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-.footer-nav-links-row a { color: var(--text-muted); text-decoration: none; font-size: 12px; font-weight: 600; }
-.footer-nav-links-row a:hover { color: var(--text-primary); }
-.footer-copyright-tag-label { font-size: 11px; color: var(--text-muted); opacity: 0.7; }
-
-/* THE CRITICAL DEVICE AUDIT BREAKPOINTS RESPONSIVENESS */
-@media (max-width: 950px) {
-    .main-layout-split-grid { grid-template-columns: 1fr; }
-    .lower-data-split-grid { grid-template-columns: 1fr; }
-    .goal-planner-split-flex-wrapper { grid-template-columns: 1fr; gap: 20px; }
+// REACTIVE THEME CORE STATE CONTEXT
+function setPlatformContext(targetPlatform) {
+    omniEngineConfig.state.platform = targetPlatform;
+    document.body.setAttribute('data-platform', targetPlatform);
     
-    /* Mobile-first Restructuring Shifts */
-    .header-desktop-selectors { display: none; }
-    .mobile-inline-filters-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-stroke); padding-bottom: 15px; }
-    .form-select-row-element label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 4px; }
-    .form-select-row-element .form-native-dropdown { width: 100%; background: var(--card-surface-raised); color: #fff; border: 1px solid var(--border-stroke); padding: 8px; border-radius: 6px; font-size: 12px; outline: none; }
+    document.querySelectorAll('.platform-tab-card').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelector(`.${targetPlatform-tab}`).classList.add('active');
     
-    .desktop-only-table-wrapper { display: none; }
-    .mobile-only-breakdown-cards-stack { display: flex; }
-    
-    /* Layout Flow Strict Order enforcement via Flexbox utilities on parents */
-    .main-layout-split-grid { display: flex; flex-direction: column; }
-    .section-configure { order: 1; }
-    .section-results { order: 2; }
+    runExecutionCalculations();
 }
 
-@media (max-width: 600px) {
-    .app-header { flex-direction: column; align-items: center; text-align: center; }
-    .header-center { width: 100%; justify-content: center; }
-    .mobile-inline-filters-box { grid-template-columns: 1fr; gap: 12px; }
-    .goal-results-grid { grid-template-columns: 1fr; }
-    .goal-right-metrics-display-stack { grid-template-columns: 1fr; }
-    .cookie-bar { flex-direction: column; text-align: center; }
+// THE PRESET PILL HANDLER IMPLEMENTATION
+function triggerPresetAllocation(tierLevel, clickedButton) {
+    omniEngineConfig.state.tier = tierLevel;
+    document.querySelectorAll('.preset-pill-btn').forEach(b => b.classList.remove('active'));
+    if(clickedButton) clickedButton.classList.add('active');
+    
+    const viewsNode = document.getElementById('input-range-views');
+    const shortsNode = document.getElementById('input-range-shorts');
+    const dealsNode = document.getElementById('input-range-deals');
+    
+    if (tierLevel === 'nano') {
+        viewsNode.value = 50000; shortsNode.value = 500000; dealsNode.value = 1;
+    } else if (tierLevel === 'micro') {
+        viewsNode.value = 2500000; shortsNode.value = 75000000; dealsNode.value = 8;
+    } else if (tierLevel === 'mega') {
+        viewsNode.value = 40000000; shortsNode.value = 450000000; dealsNode.value = 25;
+    }
+    
+    runExecutionCalculations();
+}
+
+// MAIN ESTIMATION MATH ENGINE CORE
+function runExecutionCalculations() {
+    const views = parseFloat(document.getElementById('input-range-views').value);
+    const shorts = parseFloat(document.getElementById('input-range-shorts').value);
+    const deals = parseFloat(document.getElementById('input-range-deals').value);
+    
+    // Sync inner numeric counter tags above parameters
+    document.getElementById('lbl-counter-views').innerText = views.toLocaleString();
+    document.getElementById('lbl-counter-shorts').innerText = shorts.toLocaleString();
+    document.getElementById('lbl-counter-deals').innerText = `${deals} / month`;
+    
+    const state = omniEngineConfig.state;
+    
+    // Normalized dynamic keys mapping
+    let countryKey = state.country === 'US' ? 'UnitedStates' : state.country === 'UK' ? 'UnitedKingdom' : state.country;
+    let countryMultiplier = omniEngineConfig.countries[countryKey] || 1.0;
+    let nicheMultiplier = omniEngineConfig.niches[state.niche] || 1.0;
+    let activeBounds = omniEngineConfig.rpmBounds[state.platform];
+    
+    // COMPUTE RANGES PILLARS
+    let lowAdBase = (views / 1000) * activeBounds.low * countryMultiplier * nicheMultiplier;
+    let highAdBase = (views / 1000) * activeBounds.high * countryMultiplier * nicheMultiplier;
+    
+    let lowShortsBase = (shorts / 1000) * (activeBounds.low * 0.05) * countryMultiplier * nicheMultiplier;
+    let highShortsBase = (shorts / 1000) * (activeBounds.high * 0.15) * countryMultiplier * nicheMultiplier;
+    
+    // Tiered Sponsorship multipliers
+    let tierSponsorMultiplier = state.tier === 'nano' ? 150 : state.tier === 'micro' ? 600 : 3500;
+    let lowSponsorship = deals * tierSponsorMultiplier * countryMultiplier * nicheMultiplier * 0.8;
+    let highSponsorship = deals * tierSponsorMultiplier * countryMultiplier * nicheMultiplier * 1.3;
+    
+    let lowAffiliate = (lowAdBase + lowShortsBase) * 0.12;
+    let highAffiliate = (highAdBase + highShortsBase) * 0.18;
+    
+    let cumulativeLow = lowAdBase + lowShortsBase + lowSponsorship + lowAffiliate;
+    let cumulativeHigh = highAdBase + highShortsBase + highSponsorship + highAffiliate;
+    
+    // CONVERSION DISPERSION CONSTANTS
+    let fxRate = 83.5;
+    
+    const printFormattedRange = (lowVal, highVal, modeCurr) => {
+        let sym = modeCurr === 'USD' ? '$' : '₹';
+        let mult = modeCurr === 'USD' ? 1 : fxRate;
+        let localeCode = modeCurr === 'INR' ? 'en-IN' : 'en-US';
+        return `${sym}${Math.round(lowVal * mult).toLocaleString(localeCode)} - ${sym}${Math.round(highVal * mult).toLocaleString(localeCode)}`;
+    };
+    
+    // Update Hero Blocks Display
+    document.getElementById('payout-range-display-usd').innerText = `${printFormattedRange(cumulativeLow, cumulativeHigh, state.currency)} / mo`;
+    document.getElementById('payout-range-display-inr').innerText = state.currency === 'USD' ? 
+        `≈ ${printFormattedRange(cumulativeLow, cumulativeHigh, 'INR')}` : `≈ ${printFormattedRange(cumulativeLow, cumulativeHigh, 'USD')}`;
+        
+    // MANAGE DATA STRUCTURAL DISPLAY LAYOUT GENERATION ROWS
+    const dataStack = [
+        { title: 'Platform Ad Revenue', sub: 'Long-form content monetization parameters', l: lowAdBase, h: highAdBase, p: 35 },
+        { title: 'Shorts / Reels Rewards', sub: 'Short-form monetization reward loops', l: lowShortsBase, h: highShortsBase, p: 20 },
+        { title: 'Brand Sponsorships', sub: 'Estimated direct campaign distributions', l: lowSponsorship, h: highSponsorship, p: 35 },
+        { title: 'Affiliate & Other Income', sub: 'Incremental cross-network referral matrix', l: lowAffiliate, h: highAffiliate, p: 10 }
+    ];
+    
+    // DESKTOP TABLE INJECTION STATE
+    let tableHTML = '';
+    dataStack.forEach(row => {
+        tableHTML += `
+            <tr>
+                <td><div class="table-source-cell-layout"><strong>${row.title}</strong><small>${row.sub}</small></div></td>
+                <td>${printFormattedRange(row.l, row.h, state.currency).split(' - ')[0]}</td>
+                <td>${row.p}%</td>
+                <td><span class="table-range-span-text">${printFormattedRange(row.l, row.h, state.currency)}</span></td>
+            </tr>
+        `;
+    });
+    tableHTML += `
+        <tr class="table-total-row-highlight">
+            <td>Total Estimated Earnings</td>
+            <td>${printFormattedRange(cumulativeLow, cumulativeHigh, state.currency).split(' - ')[0]}</td>
+            <td>100%</td>
+            <td>${printFormattedRange(cumulativeLow, cumulativeHigh, state.currency)}</td>
+        </tr>
+    `;
+    document.getElementById('table-body-breakdown-rows').innerHTML = tableHTML;
+    
+    // MOBILE CARDS STACK BINDING
+    let mobileCardsHTML = '';
+    dataStack.forEach(row => {
+        mobileCardsHTML += `
+            <div class="responsive-breakdown-card-node">
+                <div class="resp-card-left-meta">
+                    <strong>${row.title}</strong>
+                    <small>${row.p}% Targeted Share Allocation</small>
+                </div>
+                <div class="resp-card-right-metrics">
+                    <span class="resp-card-val">${printFormattedRange(row.l, row.h, state.currency).split(' - ')[0]}</span>
+                    <span class="resp-card-range">${printFormattedRange(row.l, row.h, state.currency)}</span>
+                </div>
+            </div>
+        `;
+    });
+    document.getElementById('mobile-cards-breakdown-mount').innerHTML = mobileCardsHTML;
+    
+    executeReverseGoalPlannerMath();
+    renderPlatformComparisonMatrixHub();
+}
+
+// REVERSE GOAL GENERATION BLOCK MATH
+function executeReverseGoalPlannerMath() {
+    const targetInput = parseFloat(document.getElementById('input-numeric-goal').value) || 0;
+    const state = omniEngineConfig.state;
+    
+    let usdTargetValue = state.currency === 'USD' ? targetInput : targetInput / 83.5;
+    let countryKey = state.country === 'US' ? 'UnitedStates' : state.country === 'UK' ? 'UnitedKingdom' : state.country;
+    let cMult = omniEngineConfig.countries[countryKey] || 1.0;
+    let nMult = omniEngineConfig.niches[state.niche] || 1.0;
+    
+    const computeViewsRequiredMetric = (platformKey, rpmValueType) => {
+        let actualRPM = omniEngineConfig.rpmBounds[platformKey][rpmValueType] * cMult * nMult;
+        if(actualRPM <= 0) return '0';
+        let viewCountResult = (usdTargetValue / actualRPM) * 1000;
+        
+        if(viewCountResult >= 1000000) return (viewCountResult / 1000000).toFixed(1) + 'M';
+        if(viewCountResult >= 1000) return (viewCountResult / 1000).toFixed(0) + 'K';
+        return Math.round(viewCountResult).toLocaleString();
+    };
+
+    document.getElementById('lbl-goal-yt-views').innerText = computeViewsRequiredMetric('youtube', 'low');
+    document.getElementById('lbl-goal-tt-views').innerText = computeViewsRequiredMetric('tiktok', 'low');
+    document.getElementById('lbl-goal-fb-views').innerText = computeViewsRequiredMetric('facebook', 'low');
+    document.getElementById('lbl-goal-currency-indicator').innerText = state.currency === 'USD' ? '$' : '₹';
+}
+
+// SECTION 5 MATRIX GENERATOR ENGINE
+function renderPlatformComparisonMatrixHub() {
+    const mountNode = document.getElementById('comparison-layout-mount-node');
+    if(!mountNode) return;
+    
+    mountNode.innerHTML = `
+        <div class="desktop-only-table-wrapper">
+            <table class="seo-table-layout-node">
+                <thead>
+                    <tr><th>Platform</th><th>RPM Range</th><th>Est. Revenue / 1M Views</th><th>Best For</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>YouTube</strong></td><td>$2.00 - $6.00</td><td>$2,000 - $6,000</td><td>Long-form content, high RPM niches</td></tr>
+                    <tr><td><strong>TikTok</strong></td><td>$0.20 - $1.20</td><td>$200 - $1,200</td><td>Short-form virality, mass reach</td></tr>
+                    <tr><td><strong>Facebook</strong></td><td>$0.30 - $0.80</td><td>$300 - $800</td><td>Community building, loyal audience</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mobile-only-breakdown-cards-stack">
+            <div class="responsive-breakdown-card-node" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                <strong>YouTube Core Parameters</strong>
+                <span style="font-size:12px; color:var(--text-muted);">RPM Range: $2.00 - $6.00 | 1M Base: $2,000 - $6,000</span>
+                <small style="color:var(--text-primary);">Best For: Long-form content, high RPM niches</small>
+            </div>
+            <div class="responsive-breakdown-card-node" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                <strong>TikTok Core Parameters</strong>
+                <span style="font-size:12px; color:var(--text-muted);">RPM Range: $0.20 - $1.20 | 1M Base: $200 - $1,200</span>
+                <small style="color:var(--text-primary);">Best For: Short-form virality, mass reach</small>
+            </div>
+            <div class="responsive-breakdown-card-node" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                <strong>Facebook Core Parameters</strong>
+                <span style="font-size:12px; color:var(--text-muted);">RPM Range: $0.30 - $0.80 | 1M Base: $300 - $800</span>
+                <small style="color:var(--text-primary);">Best For: Community building, loyal audience</small>
+            </div>
+        </div>
+    `;
+}
+
+// GLOBAL MODE CONTROLLER (DARK / LIGHT TOGGLE PRESERVED ENGINE)
+function toggleGlobalThemeMode() {
+    const currentTheme = omniEngineConfig.state.theme;
+    const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    omniEngineConfig.state.theme = targetTheme;
+    document.body.setAttribute('data-theme', targetTheme);
+    localStorage.setItem('omni_theme_mode_preference', targetTheme);
+    
+    document.getElementById('theme-switcher-btn').innerText = targetTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+}
+
+function loadSavedSettingsFromLocalStorage() {
+    const savedTheme = localStorage.getItem('omni_theme_mode_preference') || 'dark';
+    omniEngineConfig.state.theme = savedTheme;
+    document.body.setAttribute('data-theme', savedTheme);
+    document.getElementById('theme-switcher-btn').innerText = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+}
+
+// SEMANTIC INTERACTIVE ACCORDIONS TOGGLER
+function toggleAccordionState(element) {
+    const currentState = element.classList.contains('open');
+    document.querySelectorAll('.accordion-node-item').forEach(item => item.classList.remove('open'));
+    if(!currentState) element.classList.add('open');
+}
+
+// MODAL WINDOW CONTROL REPERTOIRE PACK
+const policyRegistryCopyBlocks = {
+    about: `<h3>About OmniCreator Planner</h3><p>This is a custom built demonstration estimation panel configured to track statistical metrics bounds utilizing browser-based computational models logic layers.</p>`,
+    privacy: `<h3>Privacy Policy Framework</h3><p>OmniCreator Planner operates entirely client-side. We explicitly do not monitor, capture or transfer data parameters to central database configurations. Local states reside completely inside active storage objects parameters securely.</p>`,
+    terms: `<h3>Terms of Use Protocol</h3><p>Forecasting arrays presented inside this layout system rely entirely on standard mathematical representations from public benchmarks models. Actual returns fluctuate based on direct platform cycles variables.</p>`,
+    disclaimer: `<h3>Disclaimer Note</h3><p>This application functions exclusively as an estimation toolkit mapping public benchmarks trends. We explicitly hold no connection, partnership, backing or affiliation arrays with YouTube, TikTok, Facebook or Meta Platforms Inc.</p>`
+};
+
+function openLegalPolicyModal(docId) {
+    const injector = document.getElementById('modal-content-injector');
+    if(!injector) return;
+    
+    injector.innerHTML = policyRegistryCopyBlocks[docId] || `<h3>Notification</h3><p>Operational validation pipelines active.</p>`;
+    document.getElementById('global-policy-modal-mount').style.display = 'flex';
+}
+
+function closeLegalPolicyModal() {
+    document.getElementById('global-policy-modal-mount').style.display = 'none';
+}
+
+// COMPLIANCE GDPR COOKIE BAR PREFERENCES COOK BOOK
+function acceptCookieConsent() {
+    localStorage.setItem('omni_cookie_banner_approved', 'true');
+    closeCookieBar();
+}
+
+function closeCookieBar() {
+    document.getElementById('cookie-consent-bar').style.display = 'none';
+}
+
+function checkCookieConsentState() {
+    if(localStorage.getItem('omni_cookie_banner_approved') === 'true') {
+        closeCookieBar();
+    }
 }
