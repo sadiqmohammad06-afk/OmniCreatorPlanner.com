@@ -1,5 +1,5 @@
 const omniEngineConfig = {
-  state: { platform: 'youtube', theme: 'dark', currency: 'USD', country: 'India', niche: 'Technology', tier: 'micro' },
+state: { platform: 'youtube', theme: 'dark', currency: 'USD', country: 'US', niche: 'Technology', tier: 'micro' },
   rpmBounds: { youtube: { low: 2.00, high: 6.00 }, tiktok: { low: 0.20, high: 1.20 }, facebook: { low: 0.30, high: 0.80 } },
   shortsBounds: { youtube: { low: 0.03, high: 0.12 }, tiktok: { low: 0.20, high: 1.20 }, facebook: { low: 0.05, high: 0.25 } },
   countries: { US: 1.6, UK: 1.4, Canada: 1.35, Australia: 1.3, UAE: 1.2, India: 0.55, Pakistan: 0.4, Bangladesh: 0.35, Global: 1.0 },
