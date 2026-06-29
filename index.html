@@ -3,315 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniCreator Planner | Multi-Platform Revenue Core</title>
-    <meta name="description" content="Calculate cross-platform creator revenue accurately. Premium earnings estimator for YouTube, TikTok, and Facebook with advanced niche insights.">
+    <title>OmniCreator Planner | Creator Earnings Estimator</title>
+    <meta name="description" content="Estimate potential YouTube, TikTok and Facebook creator earnings using selected inputs, public benchmarks, country factors and niche assumptions. Actual earnings may vary.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#07090e">
+    <link rel="canonical" href="https://omnicreatorplanner.com/">
+    <meta property="og:title" content="OmniCreator Planner | Creator Earnings Estimator">
+    <meta property="og:description" content="A transparent creator earnings planner for estimating potential income across YouTube, TikTok and Facebook.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://omnicreatorplanner.com/">
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "name":"OmniCreator Planner",
+      "url":"https://omnicreatorplanner.com/",
+      "description":"Creator earnings estimation and planning tool based on public benchmarks and selected inputs.",
+      "contactPoint":{"@type":"ContactPoint","email":"support@omnicreatorplanner.com","contactType":"customer support"}
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "name":"OmniCreator Planner",
+      "url":"https://omnicreatorplanner.com/"
+    }
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body data-theme="tiktok">
-
+<body data-theme="youtube">
     <div class="app-container">
-        <!-- HEADER -->
         <header class="main-header">
             <div class="logo-area">
-                <h1>OmniCreator Planner</h1>
-                <span class="sub-logo">Multi-Platform Revenue Planner</span>
-                <span class="live-badge"><span class="pulse-dot"></span> 2026 Dynamic Estimate Model</span>
+                <div class="brand-mark">OC</div>
+                <div>
+                    <h1>OmniCreator Planner</h1>
+                    <span class="sub-logo">Multi-Platform Revenue Planner</span>
+                    <span class="model-badge"><span class="pulse-dot"></span> 2026 Estimate Model</span>
+                </div>
             </div>
             <div class="controls-area">
                 <div class="select-wrapper">
+                    <label for="currency-select">Currency</label>
                     <select id="currency-select" onchange="updateCalculations()">
                         <option value="USD">USD ($)</option>
                         <option value="INR">INR (₹)</option>
                     </select>
                 </div>
                 <div class="select-wrapper">
+                    <label for="country-select">Country</label>
                     <select id="country-select" onchange="updateCalculations()">
-                        <option value="Global">Global Market</option>
                         <option value="India">India</option>
                         <option value="US">United States</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                        <option value="UAE">UAE</option>
+                        <option value="Pakistan">Pakistan</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="Global">Global Market</option>
+                    </select>
+                </div>
+                <div class="select-wrapper">
+                    <label for="niche-select">Niche</label>
+                    <select id="niche-select" onchange="updateCalculations()">
+                        <option value="technology">Technology</option>
+                        <option value="finance">Finance</option>
+                        <option value="education">Education</option>
+                        <option value="business">Business</option>
+                        <option value="gaming">Gaming</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="beauty">Beauty</option>
+                        <option value="fitness">Fitness</option>
+                        <option value="travel">Travel</option>
                     </select>
                 </div>
             </div>
         </header>
 
-        <!-- NATIVE ADSENSE SLOT: TOP -->
-        <div class="adsense-placeholder banner-ad">
-            <span>Premium Native Display Space (AdSense Auto-Inject Responsive Slot)</span>
-        </div>
+        <section class="intro-card">
+            <div>
+                <p class="eyebrow">Free creator earnings planner</p>
+                <h2>Estimate potential creator income with transparent ranges.</h2>
+                <p>Use platform, country, niche, views and sponsorship assumptions to plan content goals. This is not an official YouTube, TikTok, Facebook or Meta calculator.</p>
+            </div>
+            <button onclick="openModal('methodology')">How calculation works</button>
+        </section>
 
-        <!-- PLATFORM TABS -->
-        <nav class="platform-tabs">
-            <button class="tab-btn youtube" onclick="switchPlatform('youtube')">
-                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YT"> YouTube
-            </button>
-            <button class="tab-btn tiktok active" onclick="switchPlatform('tiktok')">
-                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TT"> TikTok
-            </button>
-            <button class="tab-btn facebook" onclick="switchPlatform('facebook')">
-                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384053.png" alt="FB"> Facebook
-            </button>
+        <nav class="platform-tabs" aria-label="Platform selector">
+            <button class="tab-btn youtube active" onclick="switchPlatform('youtube', this)"><span class="platform-dot yt"></span>YouTube</button>
+            <button class="tab-btn tiktok" onclick="switchPlatform('tiktok', this)"><span class="platform-dot tt"></span>TikTok</button>
+            <button class="tab-btn facebook" onclick="switchPlatform('facebook', this)"><span class="platform-dot fb"></span>Facebook</button>
         </nav>
 
-        <!-- MAIN DASHBOARD GRID -->
         <main class="dashboard-grid">
-            
-            <!-- LEFT: INPUT CONTROLS -->
             <section class="grid-card left-panel">
                 <h2>1. Configure Your Channel</h2>
-                
                 <div class="preset-section">
-                    <label>Creator Tier Badges</label>
+                    <label>Creator tier</label>
                     <div class="badge-group">
-                        <button class="preset-badge" onclick="applyPreset('nano')">Nano Creator</button>
-                        <button class="preset-badge active" onclick="applyPreset('micro')">Micro Influencer</button>
-                        <button class="preset-badge" onclick="applyPreset('mega')">Mega Creator</button>
+                        <button class="preset-badge" onclick="applyPreset('nano', this)">Nano Creator</button>
+                        <button class="preset-badge active" onclick="applyPreset('micro', this)">Micro Influencer</button>
+                        <button class="preset-badge" onclick="applyPreset('mega', this)">Mega Creator</button>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <div class="input-labels">
-                        <span>Monthly Video Views</span>
-                        <span class="live-counter" id="views-display">2,500,000</span>
-                    </div>
+                    <div class="input-labels"><span>Monthly Video Views</span><span class="live-counter" id="views-display">2,500,000</span></div>
                     <input type="range" id="slider-views" min="10000" max="50000000" step="10000" value="2500000" oninput="updateCalculations()">
-                    <div class="range-limits"><span>10K</span><span>50M</span></div>
+                    <div class="range-limits"><span>10K</span><span>100K</span><span>1M</span><span>10M</span><span>50M</span></div>
                 </div>
 
                 <div class="input-group">
-                    <div class="input-labels">
-                        <span>Short-form Views</span>
-                        <span class="live-counter" id="shorts-display">75,000,000</span>
-                    </div>
+                    <div class="input-labels"><span>Short-form Views</span><span class="live-counter" id="shorts-display">75,000,000</span></div>
                     <input type="range" id="slider-shorts" min="100000" max="500000000" step="50000" value="75000000" oninput="updateCalculations()">
-                    <div class="range-limits"><span>100K</span><span>500M</span></div>
+                    <div class="range-limits"><span>100K</span><span>1M</span><span>10M</span><span>100M</span><span>500M</span></div>
                 </div>
 
                 <div class="input-group">
-                    <div class="input-labels">
-                        <span>Brand Sponsorship Deals</span>
-                        <span class="live-counter" id="deals-display">8 / month</span>
-                    </div>
+                    <div class="input-labels"><span>Brand Sponsorship Deals</span><span class="live-counter" id="deals-display">8 / month</span></div>
                     <input type="range" id="slider-deals" min="0" max="30" step="1" value="8" oninput="updateCalculations()">
-                    <div class="range-limits"><span>0</span><span>30</span></div>
-                </div>
-
-                <div class="input-group">
-                    <label for="niche-select">Channel Niche</label>
-                    <div class="select-wrapper full-width">
-                        <select id="niche-select" onchange="updateCalculations()">
-                            <option value="tech">Technology (High RPM)</option>
-                            <option value="finance">Finance & Business</option>
-                            <option value="gaming">Gaming & Esports</option>
-                            <option value="entertainment">Entertainment & Comedy</option>
-                            <option value="lifestyle">Lifestyle & Vlogs</option>
-                        </select>
-                    </div>
+                    <div class="range-limits"><span>0</span><span>5</span><span>10</span><span>20</span><span>30</span></div>
                 </div>
             </section>
 
-            <!-- RIGHT: ESTIMATED EARNINGS -->
             <section class="grid-card right-panel">
                 <div class="panel-header">
                     <h2>Estimated Monthly Earnings</h2>
-                    <span class="year-tag">2026 Estimate</span>
+                    <span class="year-tag">Estimate Range</span>
                 </div>
-
                 <div class="hero-payout-box">
-                    <div class="main-payout-range" id="total-range">$8,200 - $12,450 / mo</div>
-                    <div class="alt-payout-range" id="alt-total-range">≈ ₹6,84,600 - ₹10,39,500</div>
+                    <div class="main-payout-range" id="total-range">$0 - $0 / mo</div>
+                    <div class="alt-payout-range" id="alt-total-range">≈ ₹0 - ₹0</div>
+                    <p>Estimate only. Actual earnings depend on audience location, niche, watch time, engagement, monetization status and platform policy.</p>
                 </div>
 
-                <table class="breakdown-table">
-                    <thead>
-                        <tr>
-                            <th>Revenue Breakdown</th>
-                            <th>Estimated</th>
-                            <th>% of Total</th>
-                            <th>Potential Range</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="source-cell">
-                                    <span class="dot red"></span>
-                                    <div><strong>Platform Ad Revenue</strong><small>Long-form monetization</small></div>
-                                </div>
-                            </td>
-                            <td id="breakdown-ad">$4,250</td>
-                            <td id="pct-ad">37%</td>
-                            <td class="range-cell" id="range-ad">$3,200 - $5,800</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="source-cell">
-                                    <span class="dot purple"></span>
-                                    <div><strong>Shorts / Reels Rewards</strong><small>Short-form performance payouts</small></div>
-                                </div>
-                            </td>
-                            <td id="breakdown-shorts">$2,150</td>
-                            <td id="pct-shorts">19%</td>
-                            <td class="range-cell" id="range-shorts">$1,400 - $3,100</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="source-cell">
-                                    <span class="dot blue"></span>
-                                    <div><strong>Brand Sponsorships</strong><small>Paid partnerships & integrations</small></div>
-                                </div>
-                            </td>
-                            <td id="breakdown-brand">$4,600</td>
-                            <td id="pct-brand">40%</td>
-                            <td class="range-cell" id="range-brand">$3,000 - $6,900</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="source-cell">
-                                    <span class="dot orange"></span>
-                                    <div><strong>Affiliate & Other Income</strong><small>Merch, courses, link clicks</small></div>
-                                </div>
-                            </td>
-                            <td id="breakdown-affiliate">$1,200</td>
-                            <td id="pct-affiliate">10%</td>
-                            <td class="range-cell" id="range-affiliate">$700 - $1,900</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr class="total-row">
-                            <td>Total Estimated Earnings</td>
-                            <td id="final-sum">$12,200</td>
-                            <td>100%</td>
-                            <td id="final-range">$8,300 - $17,700</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <div class="breakdown-list" aria-label="Revenue breakdown">
+                    <div class="breakdown-row"><div><strong>Platform Ad Revenue</strong><small>Long-form content monetization</small></div><span id="breakdown-ad">$0</span><em id="range-ad">$0 - $0</em></div>
+                    <div class="breakdown-row"><div><strong>Shorts / Reels Rewards</strong><small>Short-form performance payouts</small></div><span id="breakdown-shorts">$0</span><em id="range-shorts">$0 - $0</em></div>
+                    <div class="breakdown-row"><div><strong>Brand Sponsorships</strong><small>Paid partnerships and integrations</small></div><span id="breakdown-brand">$0</span><em id="range-brand">$0 - $0</em></div>
+                    <div class="breakdown-row"><div><strong>Affiliate & Other Income</strong><small>Affiliate, memberships, merch and other channels</small></div><span id="breakdown-affiliate">$0</span><em id="range-affiliate">$0 - $0</em></div>
+                    <div class="breakdown-row total"><div><strong>Total Estimated Earnings</strong><small>Potential monthly estimate</small></div><span id="final-sum">$0</span><em id="final-range">$0 - $0</em></div>
+                </div>
             </section>
         </main>
 
-        <!-- X-FACTOR: REVERSE GOAL PLANNER -->
         <section class="grid-card goal-planner-section">
-            <div class="goal-header">
-                <h2>Goal Planner</h2>
-                <span>Estimated Views Needed / mo</span>
-            </div>
+            <div class="goal-header"><h2>Goal Planner</h2><span>Estimated views needed / month</span></div>
             <div class="goal-wrapper">
                 <div class="goal-input-box">
-                    <label>Target Monthly Income</label>
-                    <div class="currency-input-container">
-                        <span class="curr-symbol" id="goal-symbol">$</span>
-                        <input type="number" id="target-amount" value="10000" oninput="calculateReverseGoal()">
-                    </div>
-                    <span class="status-msg">● On Track <small>You're well on your way!</small></span>
+                    <label for="target-amount">Target Monthly Income</label>
+                    <div class="currency-input-container"><span class="curr-symbol" id="goal-symbol">$</span><input type="number" id="target-amount" value="10000" oninput="calculateReverseGoal()"></div>
+                    <span class="status-msg">Estimate planning mode <small>Use this as a rough goal map, not a guarantee.</small></span>
                 </div>
                 <div class="goal-results-grid">
-                    <div class="goal-res-card yt-target">
-                        <span class="lbl"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt=""> YouTube</span>
-                        <div class="val" id="target-yt-views">1.1M</div>
-                        <span class="sub-lbl">Long-form Views</span>
-                    </div>
-                    <div class="goal-res-card tt-target">
-                        <span class="lbl"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt=""> TikTok</span>
-                        <div class="val" id="target-tt-views">1.6M</div>
-                        <span class="sub-lbl">Short-form Views</span>
-                    </div>
-                    <div class="goal-res-card fb-target">
-                        <span class="lbl"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384053.png" alt=""> Facebook</span>
-                        <div class="val" id="target-fb-views">1.2M</div>
-                        <span class="sub-lbl">Video Views</span>
-                    </div>
+                    <div class="goal-res-card yt-target"><span class="lbl">YouTube</span><div class="val" id="target-yt-views">0</div><span class="sub-lbl">Long-form views</span></div>
+                    <div class="goal-res-card tt-target"><span class="lbl">TikTok</span><div class="val" id="target-tt-views">0</div><span class="sub-lbl">Short-form views</span></div>
+                    <div class="goal-res-card fb-target"><span class="lbl">Facebook</span><div class="val" id="target-fb-views">0</div><span class="sub-lbl">Video views</span></div>
                 </div>
             </div>
         </section>
 
-        <!-- NATIVE ADSENSE SLOT: MIDDLE -->
-        <div class="adsense-placeholder banner-ad">
-            <span>Premium Native Display Space (AdSense In-Feed Article Layout Slot)</span>
-        </div>
-
-        <!-- SEO HIGH-VALUE LAYOUT & MATRICES -->
         <section class="seo-data-container">
             <div class="seo-card">
                 <h3>Platform Comparison</h3>
-                <table class="seo-table">
-                    <thead>
-                        <tr>
-                            <th>Platform</th>
-                            <th>RPM Range (USD)</th>
-                            <th>Est. Revenue / 1M Views</th>
-                            <th>Best For</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="txt-red">● YouTube</span></td>
-                            <td>$2.00 - $6.00</td>
-                            <td>$2,000 - $6,000</td>
-                            <td>Long-form content, high RPM niches</td>
-                        </tr>
-                        <tr>
-                            <td><span class="txt-purple">● TikTok</span></td>
-                            <td>$0.20 - $1.20</td>
-                            <td>$200 - $1,200</td>
-                            <td>Short-form virality, mass reach</td>
-                        </tr>
-                        <tr>
-                            <td><span class="txt-blue">● Facebook</span></td>
-                            <td>$0.30 - $0.80</td>
-                            <td>$300 - $800</td>
-                            <td>Community building, loyal audience</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="comparison-grid">
+                    <article><strong>YouTube</strong><span>$2.00 - $6.00 RPM</span><p>Best for long-form content, search traffic and high RPM niches.</p></article>
+                    <article><strong>TikTok</strong><span>$0.20 - $1.20 RPM</span><p>Best for short-form virality, mass reach and fast discovery.</p></article>
+                    <article><strong>Facebook</strong><span>$0.30 - $0.80 RPM</span><p>Best for community building, broad video reach and loyal audiences.</p></article>
+                </div>
             </div>
-
             <div class="seo-card">
                 <h3>Why Creators Use OmniCreator Planner</h3>
                 <ul class="value-bullets">
-                    <li>Data-driven estimates based on real platform benchmarks.</li>
-                    <li>Compare major platforms side-by-side instantly.</li>
-                    <li>Plan content strategies with reverse goal mapping logic.</li>
-                    <li>Perfect tools layout built for creators, agencies, and brands.</li>
-                    <li>Private, secure, and 100% serverless browser processing.</li>
+                    <li>Estimate potential earnings using public benchmark ranges.</li>
+                    <li>Compare major platforms side by side.</li>
+                    <li>Plan content goals with reverse goal mapping.</li>
+                    <li>Useful for creators, agencies and brands.</li>
+                    <li>No signup required for basic estimates.</li>
                 </ul>
             </div>
         </section>
 
-        <!-- FAQ ACCORDION SECTION FOR CRAWLERS -->
-        <section class="faq-container">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-grid">
-                <div class="faq-item" onclick="toggleFaq(this)">
-                    <div class="faq-q">How are earnings calculated? <span class="icon">+</span></div>
-                    <div class="faq-a"><p>We use real-time global RPM distribution tables, geographical weight multipliers, niche engagement coefficients, and public algorithmic matrices to dynamically estimate your real creator payout metrics.</p></div>
-                </div>
-                <div class="faq-item" onclick="toggleFaq(this)">
-                    <div class="faq-q">Are these figures 100% accurate? <span class="icon">+</span></div>
-                    <div class="faq-a"><p>Estimates are highly calibrated simulations based on cross-border media platform criteria. Actual earnings can fluctuate depending on video watch time, audience demographics, click-through rates, and current ad fill cycles.</p></div>
-                </div>
-                <div class="faq-item" onclick="toggleFaq(this)">
-                    <div class="faq-q">Can I use this for brand proposals? <span class="icon">+</span></div>
-                    <div class="faq-a"><p>Absolutely! The multi-platform insights generated by the scheduler provide highly structured data points that you can comfortably showcase in your brand media kits and dynamic partnership presentations.</p></div>
-                </div>
-                <div class="faq-item" onclick="toggleFaq(this)">
-                    <div class="faq-q">Is my personal data stored? <span class="icon">+</span></div>
-                    <div class="faq-a"><p>No cloud retention. OmniCreator Planner is built entirely serverless. All configurations, slider movements, and calculated values process micro-instantly right inside your local web browser engine.</p></div>
-                </div>
+        <section class="methodology-section grid-card">
+            <h2>How This Estimate Works</h2>
+            <p>OmniCreator Planner uses selected views, platform RPM ranges, country multiplier, niche multiplier, sponsorship assumptions and affiliate assumptions to create an estimated monthly range. The result is educational planning data, not a guaranteed payout.</p>
+            <div class="method-cards">
+                <article><strong>Views × RPM</strong><span>Platform revenue is estimated per 1,000 views.</span></article>
+                <article><strong>Country factor</strong><span>Audience geography can change ad value.</span></article>
+                <article><strong>Niche factor</strong><span>Finance, tech and business often estimate higher.</span></article>
+                <article><strong>Sponsorships</strong><span>Brand deal estimates depend on tier and demand.</span></article>
             </div>
         </section>
 
-        <!-- FOOTER WITH LEGAL POPUP TRIGGERS -->
+        <section class="guides-section grid-card">
+            <h2>Creator Earnings Guides</h2>
+            <div class="guide-grid">
+                <article><h3>YouTube RPM Guide</h3><p>Learn why YouTube earnings vary by niche, country, watch time and advertiser demand.</p></article>
+                <article><h3>TikTok Earnings Guide</h3><p>Understand why short-form revenue estimates are usually lower per 1,000 views but can scale with volume.</p></article>
+                <article><h3>Facebook Reels Earnings</h3><p>Compare Facebook video monetization assumptions with audience quality and region.</p></article>
+                <article><h3>Brand Sponsorship Pricing</h3><p>Plan rough sponsorship pricing using creator tier, niche and monthly reach.</p></article>
+            </div>
+        </section>
+
+        <section class="faq-container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How are earnings calculated? <span class="icon">+</span></div><div class="faq-a"><p>Estimates use selected platform, views, short-form views, country, niche, sponsorship deals and public benchmark RPM ranges.</p></div></div>
+                <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Are these figures guaranteed? <span class="icon">+</span></div><div class="faq-a"><p>No. Actual earnings may vary based on audience location, engagement, watch time, monetization status, platform policy and advertiser demand.</p></div></div>
+                <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Can I use this for brand proposals? <span class="icon">+</span></div><div class="faq-a"><p>Yes, it can help create rough planning estimates, but final brand pricing should be negotiated separately.</p></div></div>
+                <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Is my data stored? <span class="icon">+</span></div><div class="faq-a"><p>For this demo, calculations run in your browser and no account is required. Cookie choice may be stored locally in your browser.</p></div></div>
+            </div>
+        </section>
+
         <footer class="main-footer">
-            <p class="disclaimer">Estimates are based on public benchmarks and selected inputs. Actual earnings may vary.</p>
+            <p class="disclaimer">Estimates are based on public benchmarks and selected inputs. Actual earnings may vary. OmniCreator Planner is not affiliated with YouTube, TikTok, Facebook or Meta.</p>
             <div class="footer-links">
-                <a href="#" onclick="openModal('privacy')">Privacy Policy</a> | 
-                <a href="#" onclick="openModal('terms')">Terms of Use</a> | 
+                <a href="#" onclick="openModal('about')">About</a>
+                <a href="#" onclick="openModal('privacy')">Privacy Policy</a>
+                <a href="#" onclick="openModal('terms')">Terms of Use</a>
+                <a href="#" onclick="openModal('disclaimer')">Disclaimer</a>
                 <a href="#" onclick="openModal('contact')">Contact</a>
             </div>
             <p class="copyright">© 2026 OmniCreator Planner. All rights reserved.</p>
         </footer>
     </div>
 
-    <!-- MODAL POPUPS FOR ADSENSE POLICIES -->
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
         <div class="modal-box" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="closeModal()">✕</button>
@@ -319,13 +238,11 @@
         </div>
     </div>
 
-    <!-- GDPR COOKIE BANNER -->
     <div class="cookie-bar" id="cookie-bar">
-        <span>We use cookie identifiers to optimize our tools architecture and maintain absolute compliance frameworks. By continuing, you agree.</span>
+        <span>We use a local cookie choice to remember whether you accepted this notice. Calculator inputs are not sent to a server in this demo.</span>
         <button onclick="acceptCookies()">Accept</button>
     </div>
 
     <script src="script.js"></script>
 </body>
-              </html>
-          
+</html>
