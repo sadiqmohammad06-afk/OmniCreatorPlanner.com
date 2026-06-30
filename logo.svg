@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="OmniCreator Planner logo">
+  <defs>
+    <linearGradient id="g" x1="70" y1="80" x2="440" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#18d8ff"/>
+      <stop offset="0.45" stop-color="#4f63ff"/>
+      <stop offset="0.72" stop-color="#b52cff"/>
+      <stop offset="1" stop-color="#ff25cf"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#070817"/>
+  <path d="M391 141A174 174 0 1 0 391 371" fill="none" stroke="url(#g)" stroke-width="54" stroke-linecap="butt" filter="url(#glow)"/>
+  <path d="M344 188A108 108 0 1 0 344 324" fill="none" stroke="url(#g)" stroke-width="40" stroke-linecap="butt" opacity=".96"/>
+  <circle cx="256" cy="256" r="34" fill="none" stroke="url(#g)" stroke-width="12" filter="url(#glow)"/>
+</svg>
